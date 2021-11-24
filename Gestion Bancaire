@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 ///*** DECLARATION DES VARIABLES ***
-typedef struct { char* cin[10]; char* nomPrenom[50]; float montant;}Compte;
+typedef struct { char* cin[10]; char* nomPrenom[50]; float montant; }Compte;
 Compte *cm;
 int taille_Compte=0, nombre_de_appel_fidelisaton=0, votre_operation=0; float votre_motant=0;
 char* max1_cin[10],max2_cin[10],max3_cin[10];
@@ -63,7 +63,9 @@ void menu()
                           printf(" taper votre MONTANT : ");
                           scanf("%f",&montant_Client);
                           retrait_et_Depot(cin_Client,montant_Client,2);
-                     }break;
+                     }
+                     system("cls");
+                     menu();
              case 4 :
                    printf(" 1  : Par Ordre Ascendant \n");
                    printf(" 2  : Par Ordre Descendant \n");
@@ -82,6 +84,8 @@ void menu()
                            scanf("%f",&votre_motant);
                            Par_Ordre_Ascendant_Descendant(4);break;
                    }
+                   system("cls");
+                   menu();
            case 5 :
                 printf("\n taper votre CIN : ");
                 scanf("%s",cin_Client);
