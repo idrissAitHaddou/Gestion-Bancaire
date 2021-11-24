@@ -100,8 +100,8 @@ void menu()
                 menu();
            case 6 :exit(0);break;
            default :
-               if(isdigit(ch)){system("cls"); menu();break;}
-               else{exit(0);break;}
+               if(ch<1 || ch>6){system("cls"); menu();break;}
+               else{exit(0); break;}
        }
 }
 ///*** FONCTION POUR  AJOUTER DES COMPTES ***
