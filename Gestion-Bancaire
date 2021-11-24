@@ -148,7 +148,6 @@ void afficher_Comptes(int validate_order)
     printf("\n------------- TOUT LES COPMTES ------------- \n\n");
     for(int i=0;i<taille_Compte;i++)
     {
-        if(cm == NULL){system("cls");menu();break;}
         if(validate_order == 1)
         {
              printf(" => %s , cin : %s , solde = %.2f \n",cm[i].nomPrenom,cm[i].cin,cm[i].montant);
