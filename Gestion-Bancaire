@@ -2,22 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 ///*** DECLARATION DES VARIABLES ***
-typedef struct { char* cin[10]; char* nomPrenom[50]; float montant; }Compte;
+typedef struct { char cin[10]; char nomPrenom[50]; float montant; }Compte;
 Compte *cm;
 int taille_Compte=0, nombre_de_appel_fidelisaton=0, votre_operation=0; float votre_motant=0;
-char* max1_cin[10],max2_cin[10],max3_cin[10];
+char max1_cin[10],max2_cin[10],max3_cin[10];
 ///*** TOUT LES FONCTIONS ***
 void ajouter_Compte();
 void menu();
 void afficher_Comptes(int validate_order);
-void retrait_et_Depot(char* cin[10],float montant_Client,int type_action);
-int  recherche(char* cin);
+void retrait_et_Depot(char cin[10],float montant_Client,int type_action);
+int  recherche(char cin[10]);
 void Par_Ordre_Ascendant_Ascendant(int type_order);
 void fidelisaton();
 ///*** MAIN ***
 int main()
 {
-    cm =(Compte*)malloc(sizeof(Compte));
+    cm = malloc(sizeof(Compte));
     menu();
     return 0;
 }
@@ -25,7 +25,7 @@ int main()
 void menu()
 {
        if(taille_Compte>3){ fidelisaton(); }
-       int ch,nC;
+       int choix,nomber_compte;
        char cin_Client[10];
        float montant_Client;
        printf("\n ------------------------------------------- MENU ----------------------------------------------------- \n\n");
@@ -37,14 +37,14 @@ void menu()
        printf(" 6  : quitter le programme \n");
        printf("\n ------------------------------------------------------------------------------------------------------ \n\n");
        printf("\n taper votre choix : ");
-       scanf("%d",&ch);
-       switch(ch)
+       scanf("%d",&choix);
+       switch(choix)
        {
            case 1 : ajouter_Compte(1);break;
            case 2 :
                printf("\n taper le nombre des comptes que vous voullez introduire : ");
-               scanf("%d",&nC);
-               ajouter_Compte(nC);break;
+               scanf("%d",&nomber_compte);
+               ajouter_Compte(nomber_compte);break;
            case 3 :
                      printf(" 1  : Retrait \n");
                      printf(" 2  : Depot \n");
@@ -100,20 +100,20 @@ void menu()
                 menu();
            case 6 :exit(0);break;
            default :
-               if(ch<1 || ch>6){system("cls"); menu();break;}
+               if(choix<1 || choix>6){system("cls"); menu();break;}
                else{exit(0); break;}
        }
 }
 ///*** FONCTION POUR  AJOUTER DES COMPTES ***
 void ajouter_Compte(int crt)
 {   int taille=taille_Compte;
-    char* cin[10];
-    cm=realloc(cm,(taille_Compte+crt)*sizeof(Compte));
-    for(int i=taille_Compte;i<taille_Compte+crt;i++)
+    char cin[10];
+    cm=realloc(cm,(taille+crt)*sizeof(Compte));
+    for(int i=taille;i<taille+crt;i++)
     {
          printf("\n taper votre cin : ");
          scanf("%s",cin);
-         int v=recherche(cin);
+         int val_recherche=recherche(cin);
           if(taille_Compte==0)
          {
              strcpy(cm[i].cin,cin);
@@ -122,16 +122,16 @@ void ajouter_Compte(int crt)
              gets(cm[i].nomPrenom);
              printf(" taper votre montant : ");
              scanf("%f",&cm[i].montant);
-             taille++;
+             taille_Compte++;
          }
-         else if(v==0)
+         else if(val_recherche==0)
          {
              strcpy(cm[i].cin,cin);
              printf(" taper votre nom et prenom : ");
              scanf("%s",cm[i].nomPrenom);
              printf(" taper votre montant : ");
              scanf("%f",&cm[i].montant);
-             taille++;
+             taille_Compte++;
          }
          else
          {
@@ -140,7 +140,7 @@ void ajouter_Compte(int crt)
              menu();
          }
     }
-    taille_Compte=taille;
+   // taille_Compte=taille;
     system("cls");menu();
 }
 ///***** FONCTION POUR  AFFICHAGE DES COMPTES *****
@@ -156,7 +156,7 @@ void afficher_Comptes(int validate_order)
         }
         else if(validate_order == 3)
         {
-            if(cm[i].montant>votre_motant)
+            if(cm[i].montant>=votre_motant)
             {
                  printf(" => %s , cin : %s , solde = %.2f \n",cm[i].nomPrenom,cm[i].cin,cm[i].montant);
             }
@@ -167,12 +167,12 @@ void afficher_Comptes(int validate_order)
 ///***** FONCTION POUR  RECHERCHE UNE CIN *****
 int  recherche(char cinR[10])
 {
-    int vl=0;
-    for(int i=0;i<taille_Compte;i++){ if(strcmp(cm[i].cin,cinR)==0){vl=i+1;} }
-    return vl;
+    int val=0;
+    for(int i=0;i<taille_Compte;i++){ if(strcmp(cm[i].cin,cinR)==0){val=i+1;} }
+    return val;
 }
 ///***** FONCTION POUR  RETRAIT ET DEPOT *****
-void  retrait_et_Depot(char* cin[10],float montant_Client,int type_action)
+void  retrait_et_Depot(char cin[10],float montant_Client,int type_action)
 {
         int validate=recherche(cin);
         if(validate!=0)
@@ -190,6 +190,7 @@ void  retrait_et_Depot(char* cin[10],float montant_Client,int type_action)
             {
                  cm[validate-1].montant=cm[validate-1].montant+montant_Client;
             }
+             system("cls");menu();
         }
         else
         {
@@ -197,7 +198,6 @@ void  retrait_et_Depot(char* cin[10],float montant_Client,int type_action)
             printf(" votre cin incorrecte !!!!!!!");
             menu();
         }
-        system("cls");menu();
 }
 ///****** FONCTION POUR Par Ordre Ascendant ET Ascendant ******
 void  Par_Ordre_Ascendant_Descendant(int type_order)
@@ -230,8 +230,7 @@ void  Par_Ordre_Ascendant_Descendant(int type_order)
                  }
              }
          }
-         if(type_order==3){afficher_Comptes(3);}
-         else  if(type_order==4){afficher_Comptes(3);}
+         if(type_order==3 || type_order==4){afficher_Comptes(3);}
          else {afficher_Comptes(1);}
 }
 ///****** FIDELISATON *******
